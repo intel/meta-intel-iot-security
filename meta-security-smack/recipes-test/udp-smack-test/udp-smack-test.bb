@@ -7,6 +7,9 @@ SRC_URI = "file://udp_server.c \
            file://udp_client.c \
 " 
 
+inherit copybin
+TARGET_FILES += "${WORKDIR}/udp_client ${WORKDIR}/udp_server"
+
 S = "${WORKDIR}"
 do_compile() {
     ${CC} udp_client.c -o udp_client
