@@ -10,11 +10,11 @@ Dependencies
 This layer depends on:
 
     URI: git://git.openembedded.org/bitbake
-    branch: master
+    branch: 1.26
 
     URI: git://git.openembedded.org/openembedded-core
     layers: meta
-    branch: master
+    branch: fido
 
 
 Patches
