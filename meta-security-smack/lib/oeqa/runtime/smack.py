@@ -4,6 +4,7 @@ import os
 import string
 from oeqa.oetest import oeRuntimeTest, skipModule
 from oeqa.utils.decorators import *
+from oeqa.utils.helper import get_files_dir
 
 MAX_LABEL_LEN = 255
 LABEL = "a" * MAX_LABEL_LEN
@@ -432,8 +433,8 @@ class SmackEnforceMmap(SmackBasicTest):
         file_label="mmap_file_label"
         test_file = "/tmp/smack_test_mmap"
         print "mmap present: ", self.hasPackage("mmap-smack-test")
-        if not self.hasPackage("mmap-smack-test"):
-            self.skipTest("mmap_test binary not present") 
+        
+        self.target.copy_to(os.path.join(get_files_dir(), "mmap_test"), "/bin/")
 
         status, mmap_exe = self.target.run("which mmap_test")
         status, echo = self.target.run("which echo")
@@ -522,9 +523,9 @@ class SmackTcpSockets(SmackBasicTest):
 
         whole test takes places on image, depends on tcp_server/tcp_client'''
        
-        if not self.hasPackage("tcp-smack-test"):
-            self.skipTest("tcp smack binaries not present")       
-        
+        self.target.copy_to(os.path.join(get_files_dir(), "tcp_server"), "/bin/")
+        self.target.copy_to(os.path.join(get_files_dir(), "tcp_client"), "/bin/")
+
         status, output = self.target.run("ls /tmp/test_smack_tcp_sockets.sh")
         if status != 0:
             self.target.copy_to(
@@ -540,9 +541,8 @@ class SmackUdpSockets(SmackBasicTest):
 
         whole test takes places on image, depends on udp_server/udp_client'''
 
-        if not self.hasPackage("udp-smack-test"):
-            self.skipTest("udp smack binaries not present") 
-        
+        self.target.copy_to(os.path.join(get_files_dir(), "udp_client"), "/bin/")
+        self.target.copy_to(os.path.join(get_files_dir(), "udp_server"), "/bin/")
         status, output = self.target.run("ls /tmp/test_smack_udp_sockets.sh")
         if status != 0:
             self.target.copy_to(

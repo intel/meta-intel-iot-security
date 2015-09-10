@@ -7,6 +7,9 @@ SRC_URI = "file://tcp_server.c \
            file://tcp_client.c \
 " 
 
+inherit copybin
+TARGET_FILES += "${WORKDIR}/tcp_client ${WORKDIR}/tcp_server"
+
 S = "${WORKDIR}"
 do_compile() {
     ${CC} tcp_client.c -o tcp_client
