@@ -21,7 +21,7 @@ inherit cmake
 
 CXXFLAGS_append = " \
 -DCYNARA_STATE_PATH=\\\\\"${localstatedir}/cynara/\\\\\" \
--DCYNARA_LIB_PATH=\\\\\"${prefix}/lib/cynara/\\\\\" \
+-DCYNARA_LIB_PATH=\\\\\"${libdir}/cynara/\\\\\" \
 -DCYNARA_TESTS_DIR=\\\\\"${prefix}/share/cynara/tests/\\\\\" \
 -DCYNARA_CONFIGURATION_DIR=\\\\\"${sysconfdir}/cynara/\\\\\" \
 -DCYNARA_VERSION=\\\\\"${PV}\\\\\" \
@@ -31,6 +31,7 @@ ${@bb.utils.contains('PACKAGECONFIG', 'debug', '-Wp,-U_FORTIFY_SOURCE', '', d)} 
 EXTRA_OECMAKE += " \
 -DCMAKE_VERBOSE_MAKEFILE=ON \
 -DSYSTEMD_SYSTEM_UNITDIR=${systemd_unitdir}/system \
+-DCMAKE_INSTALL_LIBDIR=${libdir} \
 "
 
 # Explicitly package empty directory. Otherwise Cynara prints warnings
