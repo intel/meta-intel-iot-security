@@ -1,8 +1,7 @@
 language: c++
 compiler: gcc
-# Select Trusty Beta environment, required for testing.
-sudo: required
-dist: trusty
+# Use containers because they allow longer running jobs, which we need when compiling.
+sudo: false
 env:
   - OE_CORE=master BITBAKE=master
   - OE_CORE=jethro BITBAKE=1.28
