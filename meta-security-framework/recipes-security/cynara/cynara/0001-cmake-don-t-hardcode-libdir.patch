@@ -1,0 +1,25 @@
+From 247f8e0136acd23def711b6094ff99760f39d554 Mon Sep 17 00:00:00 2001
+From: Kevron Rees <kevron.m.rees@intel.com>
+Date: Wed, 28 Oct 2015 13:07:38 -0700
+Subject: [PATCH] cmake: don't hardcode libdir
+
+---
+ CMakeLists.txt | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 513f103..868ad8b 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -31,7 +31,7 @@ INCLUDE(CheckCXXCompilerFlag)
+ #############################  install dirs  ##################################
+ 
+ SET(LIB_INSTALL_DIR
+-    "${CMAKE_INSTALL_PREFIX}/lib"
++    "${CMAKE_INSTALL_LIBDIR}"
+     CACHE PATH
+     "Library installation directory")
+ 
+-- 
+2.1.4
+

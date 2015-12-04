@@ -13,4 +13,5 @@ file://cynara-db-migration-sysroot-support.patch \
 file://PolicyKeyFeature-avoid-complex-global-constants.patch \
 file://globals-avoid-copying-other-globals.patch \
 file://chsgen-include-logging-code-in-debug-mode.patch \
+file://0001-cmake-don-t-hardcode-libdir.patch \
 "
