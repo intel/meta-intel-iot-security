@@ -95,14 +95,14 @@ script:
   # which are implemented in Ruby.
   - rm -rf $HOME/.rvm
   - df -h .
-  # And now building...
-  - ../scripts/travis-cmd-wrapper.py --deadline=$deadline bitbake core-image-minimal app-runas mmap-smack-test tcp-smack-test udp-smack-test || BITBAKE_RESULT=1
-  - df -h .
   # The download directory can become quite large.
-  - (du -h -c -s $(ls -1 -d downloads/* downloads/git2/* tmp*/work/*/*/downloads 2>/dev/null | grep -v -e '.done$' -e '/git2$')) || true
-  - (df -h .; du -h -s * $HOME/sstate-cache) || true
   # temp files are preserved by rm_work.bbclass, but should not be that large.
   - du -h -c -s tmp*/work/*/*/*/temp | tail -1
+  - function showdiskusage () { echo 'Download directory disk usage:'; du -h -c -s $(ls -1 -d downloads/* downloads/git2/* tmp*/work/*/*/downloads 2>/dev/null | grep -v -e '.done$' -e '/git2$'); echo 'sstate disk usage:'; du -h -s * $HOME/sstate-cache; echo 'Total disk usage:'; df -h .; true; }
+  - function availableMB () { df -B1048576 . | tail -1 | sed -e 's/[^ ]* *[^ ]* *[^ ]* *\([^ ]*\).*/\1/'; }
+  # And now building. If we run out of disk space, but still have time, then simply
+  # try again after deleting the tmp directory.
+  - while true; do ../scripts/travis-cmd-wrapper.py --deadline=$deadline bitbake core-image-minimal app-runas mmap-smack-test tcp-smack-test udp-smack-test && BITBAKE_RESULT= || BITBAKE_RESULT=1; showdiskusage; if [ ! "$BITBAKE_RESULT" ] || [ $(date +%s) -gt $deadline ] || [ $(availableMB) -gt 500; then break; fi; echo 'Cleaning tmp and trying again'; rm -rf tmp*; done
   # Copy new sstate files to S3 bucket.
   - $TRAVIS_BUILD_DIR/scripts/sstate2s3.sh
   # Finally! Running tests.
