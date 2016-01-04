@@ -10,6 +10,8 @@ System System::Run rwxat-
 System System::Shared rwxat-
 System ^ rwxa--
 System User rwx---
+System User::Home rwxat-
+System User::App:Shared rwxat-
 _ System::Run rwxat-
 _ System -wx---
 ^ System::Log rwxa--
@@ -52,5 +54,5 @@ pkg_postinst_${PN}_smack() {
 
     # From https://review.tizen.org/git/?p=platform/core/appfw/tizen-platform-config.git;a=blob;f=packaging/tizen-platform-config.spec
     find $D${sysconfdir}/skel | xargs chsmack -a User
-    chsmack -a User::Home $D${sysconfdir}/skel
+    chsmack -a User::Home -t $D${sysconfdir}/skel
 }
