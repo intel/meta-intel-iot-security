@@ -10,6 +10,8 @@ System System::Run rwxat-
 System System::Shared rwxat-
 System ^ rwxa--
 System User rwx---
+System User::Home rwxa--
+System User::App:Shared rwxa--
 _ System::Run rwxat-
 _ System -wx---
 ^ System::Log rwxa--
