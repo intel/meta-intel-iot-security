@@ -564,6 +564,7 @@ class SmackFileLabels(SmackBasicTest):
         expected = '''
 /tmp access="*"
 /etc access="System::Shared" transmute="TRUE"
+/etc/passwd access="System::Shared"
 /etc/skel access="User::Home"
 /var/log access="System::Log" transmute="TRUE"
 /var/tmp access="*"
