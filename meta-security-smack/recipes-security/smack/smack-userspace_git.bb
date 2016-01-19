@@ -12,8 +12,10 @@ RPROVIDES_${PN} += "smack"
 
 LIC_FILES_CHKSUM = "file://${COMMON_LICENSE_DIR}/GPL-2.0;md5=801f80980d171dd6425610833a22dbe6"
 PV = "1.1.0+git${SRCPV}"
-SRCREV = "0bd2831dae7500fcfc080519ded5ae2bf6752226"
-SRC_URI += "git://review.tizen.org/platform/upstream/smack;nobranch=1"
+#SRCREV = "0bd2831dae7500fcfc080519ded5ae2bf6752226"
+#SRC_URI += "git://review.tizen.org/platform/upstream/smack;nobranch=1"
+SRC_URI += "git://github.com/jobol/smack.git;nobranch=1"
+SRCREV = "e24dcb3fa22ee8fddf7ce2012acda5f9c6fb7f85"
 S = "${WORKDIR}/git"
 
 inherit autotools
