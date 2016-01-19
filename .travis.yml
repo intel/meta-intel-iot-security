@@ -51,6 +51,8 @@ script:
   # For testing...
   - echo 'EXTRA_IMAGE_FEATURES = "debug-tweaks ssh-server-dropbear"' >>conf/local.conf
   - echo 'CORE_IMAGE_EXTRA_INSTALL_append_pn-core-image-minimal = " python"' >>conf/local.conf
+  # Ensures that Smack xattrs are handled correctly.
+  - echo 'INHERIT += "xattr-images"' >>conf/local.conf
   # Use Amazon S3 bucket as sstate cache if available.
   - if [ -n "$AWS_BUCKET" ]; then echo "SSTATE_MIRRORS = \"file://.* http://$AWS_BUCKET.s3-website-${AWS_BUCKET_REGION:-us-east-1}.amazonaws.com/PATH\"" >>conf/local.conf; fi
   # Can monitor less directories (it is all one file system) and
