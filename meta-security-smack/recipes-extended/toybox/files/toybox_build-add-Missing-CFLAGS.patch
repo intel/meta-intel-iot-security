@@ -1,0 +1,42 @@
+From bf14101f314b3d28a772e14f484e731bb9bf43e5 Mon Sep 17 00:00:00 2001
+From: Alejandro Joya <alejandro.joya.cruz@intel.com>
+Date: Mon, 25 Jan 2016 12:56:41 -0600
+Subject: [PATCH] toybox_build: add Missing CFLAGS
+
+add CFLAGS to multiple builds to forward libraries location in Yocto.
+
+Signed-off-by: Alejandro Joya <alejandro.joya.cruz@intel.com>
+---
+ Makefile        | 2 +-
+ scripts/make.sh | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 1ea6929..0bb3c75 100644
+--- a/Makefile
++++ b/Makefile
+@@ -31,7 +31,7 @@ bloatcheck: toybox_old toybox_unstripped
+ 
+ generated/instlist: toybox_stuff
+ 	NOBUILD=1 scripts/make.sh
+-	$(HOSTCC) -I . scripts/install.c -o generated/instlist
++	$(HOSTCC) -I . $(CFLAGS) scripts/install.c -o generated/instlist
+ 
+ install_flat: generated/instlist
+ 	scripts/install.sh --symlink --force
+diff --git a/scripts/make.sh b/scripts/make.sh
+index 7ebe148..7d2d90a 100755
+--- a/scripts/make.sh
++++ b/scripts/make.sh
+@@ -212,7 +212,7 @@ fi
+ echo "generated/help.h"
+ if [ generated/config2help -ot scripts/config2help.c ]
+ then
+-  do_loudly $HOSTCC scripts/config2help.c -I . lib/xwrap.c lib/llist.c \
++  do_loudly $HOSTCC scripts/config2help.c $CFLAGS -I . lib/xwrap.c lib/llist.c \
+     lib/lib.c lib/portability.c -o generated/config2help || exit 1
+ fi
+ generated/config2help Config.in $KCONFIG_CONFIG > generated/help.h || exit 1
+-- 
+2.5.0
+
