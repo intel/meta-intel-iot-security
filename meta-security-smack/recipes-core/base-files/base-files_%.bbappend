@@ -46,6 +46,12 @@ pkg_postinst_${PN}_smack() {
     chsmack -t $D${sysconfdir}
     chsmack -a 'System::Shared' $D${sysconfdir}
 
+    # Same for /var. Any daemon running as "System" will get write access
+    # to everything.
+    mkdir -p $D${localstatedir}
+    chsmack -t $D${localstatedir}
+    chsmack -a 'System::Shared' $D${localstatedir}
+
     # <filesystem path="/tmp" label="*" />
     mkdir -p $D/tmp
     chsmack -a '*' $D/tmp
