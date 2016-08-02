@@ -1,0 +1,10 @@
+System _ -----l
+System System::Log rwxa--
+System System::Run rwxat-
+System System::Shared rwxat-
+System ^ rwxa--
+_ System::Run rwxat-
+_ System -wx---
+^ System::Log rwxa--
+^ System::Run rwxat-
+^ System rwxa--
