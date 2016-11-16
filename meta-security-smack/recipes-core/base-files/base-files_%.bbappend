@@ -1,9 +1,23 @@
-# Install default Smack rules, copied from a running Tizen IVI 3.0.
-# Corresponds to manifest file from default-access-domains in Tizen:
-# https://review.tizen.org/git?p=platform/core/security/default-ac-domains.git;a=blob;f=packaging/default-ac-domains.manifest
+# The Smack labels need to be loaded either from initramfs or
+# automatically by systemd from rootfs. Select a configuration package
+# that provides the labels and makes sure that they are loaded. The
+# benefit from loading the files from initramfs is interoperability with
+# IMA -- if you want to reference Smack labels from IMA policy files,
+# the Smack labels need to be loaded before IMA policy files.
+#
+# So, you'll either need to select package initramfs-framework-smack and
+# put that to your initramfs image, or install the label file to
+# directory /etc/smack/accesses.d and let systemd load that
+# automatically for you. You can control this by using
+# SMACK_INSTALL_TO_INITRAMFS variable.
+
 do_install_append_smack () {
-    install -d ${D}/${sysconfdir}/smack/accesses.d
-    cat >${D}/${sysconfdir}/smack/accesses.d/default-access-domains <<EOF
+
+    if [ -z "${SMACK_INSTALL_TO_INITRAMFS}" ] ; then
+        # Smack is not installed to initramfs, so let systemd load the
+        # labels from rootfs.
+        install -d ${D}/${sysconfdir}/smack/accesses.d
+        cat >${D}/${sysconfdir}/smack/accesses.d/default-access-domains <<EOF
 System _ -----l
 System System::Log rwxa--
 System System::Run rwxat-
@@ -15,7 +29,8 @@ _ System -wx---
 ^ System::Run rwxat-
 ^ System rwxa--
 EOF
-    chmod 0644 ${D}/${sysconfdir}/smack/accesses.d/default-access-domains
+        chmod 0644 ${D}/${sysconfdir}/smack/accesses.d/default-access-domains
+    fi
 
     install -d ${D}/${libdir}/tmpfiles.d
     cat >${D}/${libdir}/tmpfiles.d/packet-forwarding.conf <<EOF

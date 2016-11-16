@@ -1,0 +1,45 @@
+#!/bin/sh
+#
+# Loads Smack policy into the kernel.
+
+smack_enabled() {
+    # Check that smack is enabled (kernel has created /sys/fs/smackfs)
+    if [ ! -d /sys/fs/smackfs ]; then
+        info "Smack: /sys/fs/smackfs doesn't exist, disabling label loading."
+        return 1
+    fi
+
+    return 0
+}
+
+smack_run() {
+    if [ ! -d /etc/smack/accesses.d ]; then
+        info "Smack: /etc/smack/accesses.d doesn't exist, not loading policy files."
+        return 0
+    fi
+
+    # Mount smack filesystem to /sys/fs/smackfs
+
+    if ! mount -o smackfsdef=* -t smackfs smackfs /sys/fs/smackfs; then
+        fatal "Smack: could not mount smackfs."
+    fi
+
+    for file in /etc/smack/accesses.d/*; do
+
+        while read -r subject object access newaccess; do
+
+            if [ -z "$newaccess" ]; then
+                # If three tokens write the line to /sys/fs/smackfs/load2
+                if ! echo "$subject $object $access" > /sys/fs/smackfs/load2; then
+                    fatal "Smack: Failed to write line to /sys/fs/smackfs/load2"
+                fi
+            else
+                # If four tokens write the line to /sys/fs/smackfs/change-rule
+                if ! echo "$subject $object $access $newaccess" > /sys/fs/smackfs/change-rule; then
+                    fatal "Smack: failed to write line to /sys/fs/smackfs/change-rule"
+                fi
+            fi
+
+        done < "$file"
+    done;
+}

@@ -31,6 +31,7 @@ IMA_EVM_SETATTR_PATCH_4.4.14 = "file://0001-ima-fix-ima_inode_post_setattr.patch
 # Kernel config fragment enabling IMA/EVM and (where necessary and possible)
 # also patching the kernel.
 IMA_EVM_CFG_yes = " file://ima.cfg \
+                    file://ima-lsm.cfg \
                     ${@ d.getVar('IMA_EVM_SETATTR_PATCH_' + (d.getVar('LINUX_VERSION', True) or ''), True) or ''} \
                   "
 IMA_EVM_CFG_no = ""
