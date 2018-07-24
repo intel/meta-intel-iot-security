@@ -42,6 +42,7 @@ EOF
 # - works for directories which are not packaged by default when empty
 RDEPENDS_${PN}_append_smack = " smack-userspace"
 DEPENDS_append_smack = " smack-userspace-native"
+PACKAGE_WRITE_DEPS_append_smack = " smack-userspace-native"
 pkg_postinst_${PN}_smack() {
     #!/bin/sh -e
 
