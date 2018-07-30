@@ -20,7 +20,7 @@ EXTRA_IMAGECMD_jffs2_append = " --with-xattr"
 # The GNU documentation does not specify whether --xattrs-include is necessary.
 # In practice, it turned out to be not needed when creating archives and
 # required when extracting, but it seems prudent to use it in both cases.
-IMAGE_DEPENDS_tar_append = " tar-replacement-native"
+do_image_tar[depends] += "tar-replacement-native:do_populate_sysroot"
 EXTRANATIVEPATH += "tar-native"
 IMAGE_CMD_TAR = "tar --xattrs --xattrs-include=*"
 
